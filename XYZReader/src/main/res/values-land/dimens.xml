@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Collapsed Toolbar metrics -->
+    <dimen name="appbar_layout_height">200dp</dimen>
+    <dimen name="toolbar_height_collapsed">48dp</dimen>
+
+</resources>

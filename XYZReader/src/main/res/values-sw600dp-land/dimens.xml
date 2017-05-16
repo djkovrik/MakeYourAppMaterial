@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Collapsed Toolbar metrics -->
+    <dimen name="appbar_layout_height">280dp</dimen>
+
+    <!-- Other -->
+    <dimen name="max_layout_width">630dp</dimen>
+    <dimen name="nested_view_negative_margin">-140dp</dimen>
+</resources>

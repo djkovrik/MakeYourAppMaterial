@@ -1,11 +1,55 @@
 <resources>
-    <!-- detail -->
-    <dimen name="detail_title_text_size">32sp</dimen>
-    <dimen name="detail_body_text_size">22sp</dimen>
-    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
+    <!-- Based on https://material.io/guidelines -->
 
-    <dimen name="fab_elevation">2dp</dimen>
-    <dimen name="fab_press_translation_z">6dp</dimen>
-    <dimen name="fab_margin">24dp</dimen>
+    <!-- Elevation values -->
+    <dimen name="elevation_fab_pressed">12dp</dimen>
+    <dimen name="elevation_card_picked_up">8dp</dimen>
+    <dimen name="elevation_fab_resting">6dp</dimen>
+    <dimen name="elevation_snackbar">6dp</dimen>
+    <dimen name="elevation_appbar">4dp</dimen>
+    <dimen name="elevation_refresh_indicator">3dp</dimen>
+    <dimen name="elevation_card_resting">2dp</dimen>
 
+    <!-- Metrics and keylines -->
+    <dimen name="keyline_margin_screen_edge">16dp</dimen>
+    <dimen name="keyline_margin_horizontal">16dp</dimen>
+    <dimen name="keyline_margin_content">72dp</dimen>
+    <dimen name="vertical_spacing_statusbar">24dp</dimen>
+    <dimen name="vertical_spacing_toolbar">56dp</dimen>
+    <dimen name="vertical_spacing_subtitle">48dp</dimen>
+    <dimen name="vertical_spacing_list_item">72dp</dimen>
+    <dimen name="space_between_content_areas">8dp</dimen>
+
+    <!-- Structure -->
+    <dimen name="appbar_height">56dp</dimen>
+    <dimen name="appbar_horizontal_padding">16dp</dimen>
+    <dimen name="appbar_icon_padding">16dp</dimen>
+    <dimen name="appbar_title_left_padding">72dp</dimen>
+    <dimen name="appbar_title_bottom_padding">20dp</dimen>
+
+    <!-- Components -->
+    <!-- FAB -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_mini_size">40dp</dimen>
+
+    <!-- Cards -->
+    <dimen name="card_primary_title_top_padding">24dp</dimen>
+    <dimen name="card_primary_title_bottom_padding">16dp</dimen>
+    <dimen name="card_action_button_row_padding">8dp</dimen>
+    <dimen name="card_supporting_text_top_padding">16dp</dimen>
+    <dimen name="card_supporting_text_bottom_padding">24dp</dimen>
+    <dimen name="card_left_and_right_padding">16dp</dimen>
+    <dimen name="card_top_and_bottom_padding">16dp</dimen>
+    <dimen name="card_padding_from_edge_of_screen_to_card">4dp</dimen>
+    <dimen name="card_space_between_cards">4dp</dimen>
+
+    <!-- Collapsed Toolbar metrics -->
+    <dimen name="appbar_layout_height">260dp</dimen>
+    <dimen name="toolbar_height_collapsed">56dp</dimen>
+    <dimen name="toolbar_expanded_title_margin_bottom">40dp</dimen>
+
+    <!-- Other -->
+    <dimen name="max_layout_width">@dimen/custom_match_parent</dimen>
+    <dimen name="nested_view_negative_margin">-150dp</dimen>
 </resources>
