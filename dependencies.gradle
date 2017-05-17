@@ -13,7 +13,19 @@ ext {
 
   // Library versions
   supportLibVersion = "25.3.1"
+  rxAndroidVersion = "2.0.1"
+  rxJavaVersion = "2.1.0"
+  daggerVersion = "2.10"
+  retrofitVersion = "2.3.0"
   okhttpVersion = "3.8.0"
+  butterKnifeVersion = "8.6.0"
+  autoValueVersion = "1.4"
+  autoValueMoshiVersion = "0.4.3"
+  sqlBriteVersion = "1.1.1"
+  moshiVersion = "1.5.0"
+  timberVersion = "4.5.1"
+  glideVersion = "3.7.0"
+  stethoVersion = "1.5.0"
 
   // Libraries
   supportDependencies = [
@@ -26,7 +38,42 @@ ext {
       supportV13  : "com.android.support:support-v13:${supportLibVersion}",
   ]
 
-  okhttpDependencies = [
-      okhttp: 'com.squareup.okhttp3:okhttp:3.1.2'
+  rxDependancies = [
+      rxAndroid: "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+      rxJava   : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
   ]
+
+  daggerDependancies = [
+      dagger: "com.google.dagger:dagger:${daggerVersion}",
+      daggerApt: "com.google.dagger:dagger-compiler:${daggerVersion}",
+  ]
+
+  retrofitDependancies = [
+      retrofit      : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+      rxJavaAdapter : "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}",
+      moshiConverter: "com.squareup.retrofit2:converter-moshi:${retrofitVersion}",
+  ]
+
+  butterKnifeDependancies = [
+      butterknife   : "com.jakewharton:butterknife:${butterKnifeVersion}",
+      butterknifeApt: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+  ]
+
+  autoValueDependancies = [
+      autoValueApt     : "com.google.auto.value:auto-value:${autoValueVersion}",
+      autoValueProvided: "com.jakewharton.auto.value:auto-value-annotations:${autoValueVersion}",
+      moshiApt         : "com.ryanharter.auto.value:auto-value-moshi:${autoValueMoshiVersion}",
+      moshiProvided    : "com.ryanharter.auto.value:auto-value-moshi-annotations:${autoValueMoshiVersion}",
+  ]
+
+  stethoDependancies = [
+      stetho       : "com.facebook.stetho:stetho:${stethoVersion}",
+      networkHelper: "com.facebook.stetho:stetho-okhttp3:${stethoVersion}",
+  ]
+
+  okhttpDependancy = "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+  sqlBriteDependancy = "com.squareup.sqlbrite:sqlbrite:${sqlBriteVersion}"
+  moshiDependancy = "com.squareup.moshi:moshi:${moshiVersion}"
+  timberDependancy = "com.jakewharton.timber:timber:${timberVersion}"
+  glideDependancy = "com.github.bumptech.glide:glide:${glideVersion}"
 }
