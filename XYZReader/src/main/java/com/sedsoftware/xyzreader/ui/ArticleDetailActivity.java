@@ -1,4 +1,4 @@
-package com.example.xyzreader.ui;
+package com.sedsoftware.xyzreader.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
