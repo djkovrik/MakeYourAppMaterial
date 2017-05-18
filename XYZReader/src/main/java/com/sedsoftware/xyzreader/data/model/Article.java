@@ -24,15 +24,15 @@ public abstract class Article {
   }
 
   @AutoValue.Builder
-  abstract static class Builder {
-    abstract Builder id(int id);
-    abstract Builder title(String title);
-    abstract Builder author(String author);
-    abstract Builder body(String body);
-    abstract Builder thumb(String thumb);
-    abstract Builder photo(String photo);
-    abstract Builder aspect_ratio(double aspect_ratio);
-    abstract Builder published_date(String published_date);
+  public abstract static class Builder {
+    public abstract Builder id(int id);
+    public abstract Builder title(String title);
+    public abstract Builder author(String author);
+    public abstract Builder body(String body);
+    public abstract Builder thumb(String thumb);
+    public abstract Builder photo(String photo);
+    public abstract Builder aspect_ratio(double aspect_ratio);
+    public abstract Builder published_date(String published_date);
 
     public abstract Article build();
   }
