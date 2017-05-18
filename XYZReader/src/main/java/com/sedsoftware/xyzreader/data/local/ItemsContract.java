@@ -1,4 +1,4 @@
-package com.sedsoftware.xyzreader.data;
+package com.sedsoftware.xyzreader.data.local;
 
 import android.net.Uri;
 

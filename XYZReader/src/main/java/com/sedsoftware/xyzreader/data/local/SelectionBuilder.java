@@ -20,7 +20,7 @@
  * -Changed package name
  */
 
-package com.sedsoftware.xyzreader.data;
+package com.sedsoftware.xyzreader.data.local;
 
 import java.util.ArrayList;
 import java.util.Arrays;

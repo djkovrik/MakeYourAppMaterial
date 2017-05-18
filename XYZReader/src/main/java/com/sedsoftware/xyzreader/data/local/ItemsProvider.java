@@ -1,5 +1,5 @@
 
-package com.sedsoftware.xyzreader.data;
+package com.sedsoftware.xyzreader.data.local;
 
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
