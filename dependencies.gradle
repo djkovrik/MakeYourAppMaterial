@@ -15,6 +15,7 @@ ext {
   supportLibVersion = "25.3.1"
   rxAndroidVersion = "2.0.1"
   rxJavaVersion = "2.1.0"
+  rxJavaInteropVersion = "0.10.0"
   daggerVersion = "2.10"
   retrofitVersion = "2.3.0"
   okhttpVersion = "3.8.0"
@@ -39,12 +40,13 @@ ext {
   ]
 
   rxDependancies = [
-      rxAndroid: "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
-      rxJava   : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+      rxAndroid    : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+      rxJava       : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+      rxJavaInterop: "com.github.akarnokd:rxjava2-interop:${rxJavaInteropVersion}"
   ]
 
   daggerDependancies = [
-      dagger: "com.google.dagger:dagger:${daggerVersion}",
+      dagger   : "com.google.dagger:dagger:${daggerVersion}",
       daggerApt: "com.google.dagger:dagger-compiler:${daggerVersion}",
   ]
 
