@@ -2,9 +2,8 @@ package com.sedsoftware.xyzreader.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
-public class ArticleDetailActivity extends AppCompatActivity {
+public class ArticleDetailActivity extends BaseActivity {
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {

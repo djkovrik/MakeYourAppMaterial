@@ -3,6 +3,8 @@ package com.sedsoftware.xyzreader.injection.components;
 import android.app.Application;
 import android.content.Context;
 import com.sedsoftware.xyzreader.XYZReaderApp;
+import com.sedsoftware.xyzreader.data.DataManager;
+import com.sedsoftware.xyzreader.data.local.DatabaseHelper;
 import com.sedsoftware.xyzreader.injection.ApplicationContext;
 import com.sedsoftware.xyzreader.injection.modules.ApplicationModule;
 import dagger.Component;
@@ -18,4 +20,8 @@ public interface ApplicationComponent {
   Context getContext();
 
   Application getApplication();
+
+  DataManager getDataManager();
+
+  DatabaseHelper getDatabaseHelper();
 }

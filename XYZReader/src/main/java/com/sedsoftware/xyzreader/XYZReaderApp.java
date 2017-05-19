@@ -1,10 +1,16 @@
 package com.sedsoftware.xyzreader;
 
 import android.app.Application;
+import android.content.Context;
 import com.facebook.stetho.Stetho;
+import com.sedsoftware.xyzreader.injection.components.ApplicationComponent;
+import com.sedsoftware.xyzreader.injection.components.DaggerApplicationComponent;
+import com.sedsoftware.xyzreader.injection.modules.ApplicationModule;
 import timber.log.Timber;
 
 public class XYZReaderApp extends Application {
+
+  ApplicationComponent applicationComponent;
 
   @Override
   public void onCreate() {
@@ -16,5 +22,19 @@ public class XYZReaderApp extends Application {
 
       Stetho.initializeWithDefaults(this);
     }
+
+    applicationComponent = DaggerApplicationComponent.builder()
+        .applicationModule(new ApplicationModule(this))
+        .build();
+
+    applicationComponent.inject(this);
+  }
+
+  public static XYZReaderApp get(Context context) {
+    return (XYZReaderApp) context.getApplicationContext();
+  }
+
+  public ApplicationComponent getComponent() {
+    return applicationComponent;
   }
 }
