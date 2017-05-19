@@ -10,5 +10,5 @@ public interface ArticlesService {
   String ENDPOINT = "https://go.udacity.com";
 
   @GET("/xyz-reader-json")
-  Observable<List<Article>> loadArticles();
+  Observable<List<Article>> loadArticlesFromServer();
 }
