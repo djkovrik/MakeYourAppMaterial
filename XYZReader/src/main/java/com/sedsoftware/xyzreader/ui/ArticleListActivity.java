@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -13,15 +14,21 @@ import butterknife.ButterKnife;
 import com.sedsoftware.xyzreader.R;
 import com.sedsoftware.xyzreader.data.DataManager;
 import com.sedsoftware.xyzreader.data.RequestState;
+import com.sedsoftware.xyzreader.ui.ArticlesAdapter.OnArticleClickListener;
+import io.reactivex.Completable;
+import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 import timber.log.Timber;
 
 @SuppressWarnings("ConstantConditions")
 public class ArticleListActivity extends BaseActivity implements
-    ArticlesAdapter.OnArticleClickListener {
+    OnArticleClickListener, OnRefreshListener {
 
   @Inject
   DataManager dataManager;
+
+  private Completable articlesSync;
+  private Disposable articlesSubscribtion;
 
   @BindView(R.id.toolbar)
   Toolbar toolbar;
@@ -43,6 +50,15 @@ public class ArticleListActivity extends BaseActivity implements
     setContentView(R.layout.activity_article_list);
     ButterKnife.bind(this);
 
+    articlesSync = dataManager
+        .syncArticles()
+        .doOnSubscribe(disposable -> Timber.d("Sync started..."))
+        .doOnComplete(() -> Timber.d("Sync completed"));
+
+    if (savedInstanceState == null && articlesSubscribtion == null) {
+      articlesSubscribtion = articlesSync.subscribe();
+    }
+
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -60,9 +76,7 @@ public class ArticleListActivity extends BaseActivity implements
     recyclerView.setHasFixedSize(true);
     recyclerView.setAdapter(adapter);
 
-    if (savedInstanceState == null) {
-      dataManager.syncArticles().subscribe();
-    }
+    swipeRefreshLayout.setOnRefreshListener(this);
 
     dataManager.getArticlesObservableStream()
         .doOnSubscribe(disposable -> adapter.clearList())
@@ -90,5 +104,13 @@ public class ArticleListActivity extends BaseActivity implements
           break;
       }
     });
+  }
+
+  @Override
+  public void onRefresh() {
+      if (articlesSubscribtion != null && !articlesSubscribtion.isDisposed()) {
+        articlesSubscribtion.dispose();
+      }
+    articlesSubscribtion = articlesSync.subscribe();
   }
 }

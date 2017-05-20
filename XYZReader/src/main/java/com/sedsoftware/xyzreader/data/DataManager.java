@@ -47,6 +47,7 @@ public class DataManager {
   public Observable<Article> getArticlesObservableStream() {
     return databaseHelper
         .getArticlesFromDatabase()
+        .compose(RxUtils.applySchedulers())
         .flatMap(Observable::fromIterable)
         .distinct();
   }
