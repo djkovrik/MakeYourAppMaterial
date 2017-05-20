@@ -1,7 +1,6 @@
 package com.sedsoftware.xyzreader.data;
 
 import com.sedsoftware.xyzreader.data.local.DatabaseHelper;
-import com.sedsoftware.xyzreader.data.local.PreferencesHelper;
 import com.sedsoftware.xyzreader.data.model.Article;
 import com.sedsoftware.xyzreader.data.remote.ArticlesService;
 import com.sedsoftware.xyzreader.utils.RxUtils;
@@ -16,15 +15,12 @@ public class DataManager {
 
   private final ArticlesService articlesService;
   private final DatabaseHelper databaseHelper;
-  private final PreferencesHelper preferencesHelper;
 
   @Inject
-  public DataManager(ArticlesService articlesService, DatabaseHelper databaseHelper,
-      PreferencesHelper preferencesHelper) {
+  public DataManager(ArticlesService articlesService, DatabaseHelper databaseHelper) {
 
     this.articlesService = articlesService;
     this.databaseHelper = databaseHelper;
-    this.preferencesHelper = preferencesHelper;
   }
 
   public Completable syncArticles() {
