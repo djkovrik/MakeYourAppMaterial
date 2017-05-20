@@ -16,6 +16,7 @@ ext {
   rxAndroidVersion = "2.0.1"
   rxJavaVersion = "2.1.0"
   rxJavaInteropVersion = "0.10.0"
+  rxRelayVersion = "2.0.0"
   daggerVersion = "2.10"
   retrofitVersion = "2.3.0"
   okhttpVersion = "3.8.0"
@@ -42,7 +43,8 @@ ext {
   rxDependancies = [
       rxAndroid    : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
       rxJava       : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
-      rxJavaInterop: "com.github.akarnokd:rxjava2-interop:${rxJavaInteropVersion}"
+      rxJavaInterop: "com.github.akarnokd:rxjava2-interop:${rxJavaInteropVersion}",
+      rxRelay      : "com.jakewharton.rxrelay2:rxrelay:${rxRelayVersion}",
   ]
 
   daggerDependancies = [

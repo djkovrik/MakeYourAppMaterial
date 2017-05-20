@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sedsoftware.xyzreader.R;
 import com.sedsoftware.xyzreader.data.DataManager;
+import com.sedsoftware.xyzreader.data.RequestState;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -43,6 +44,8 @@ public class ArticleListActivity extends BaseActivity {
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+    handleLoadingIndicator(swipeRefreshLayout);
+
     int columnsCount = getResources().getInteger(R.integer.list_column_count);
 
     StaggeredGridLayoutManager sglm =
@@ -61,7 +64,24 @@ public class ArticleListActivity extends BaseActivity {
 
     dataManager.getArticlesObservableStream()
         .doOnSubscribe(disposable -> adapter.clearList())
-        .doOnNext(article -> Timber.tag("myxyzreader").d("Fetch article from db: " + article.title()))
+        .doOnNext(article -> Timber.d("Fetch article from db: " + article.title()))
         .subscribe(article -> adapter.addArticle(article));
+  }
+
+  private void handleLoadingIndicator(SwipeRefreshLayout layout) {
+    dataManager.getRequestState().subscribe(state -> {
+      switch (state) {
+        case RequestState.IDLE:
+          break;
+        case RequestState.LOADING:
+          layout.setRefreshing(true);
+          break;
+        case RequestState.COMPLETED:
+          layout.setRefreshing(false);
+          break;
+        case RequestState.ERROR:
+          break;
+      }
+    });
   }
 }

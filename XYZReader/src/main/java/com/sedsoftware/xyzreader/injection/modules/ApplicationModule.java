@@ -2,6 +2,8 @@ package com.sedsoftware.xyzreader.injection.modules;
 
 import android.app.Application;
 import android.content.Context;
+import com.jakewharton.rxrelay2.BehaviorRelay;
+import com.sedsoftware.xyzreader.data.RequestState;
 import com.sedsoftware.xyzreader.data.remote.ArticlesService;
 import com.sedsoftware.xyzreader.data.remote.ServiceFactory;
 import com.sedsoftware.xyzreader.injection.ApplicationContext;
@@ -33,5 +35,11 @@ public class ApplicationModule {
   @Singleton
   ArticlesService provideArticlesService() {
     return ServiceFactory.createFrom(ArticlesService.class, ArticlesService.ENDPOINT);
+  }
+
+  @Provides
+  @Singleton
+  BehaviorRelay<Integer> provideBehaviorRelay() {
+    return BehaviorRelay.createDefault(RequestState.IDLE);
   }
 }
