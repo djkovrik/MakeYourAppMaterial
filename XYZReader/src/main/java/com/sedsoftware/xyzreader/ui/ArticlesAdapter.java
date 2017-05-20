@@ -15,7 +15,6 @@ import com.sedsoftware.xyzreader.data.model.Article;
 import com.sedsoftware.xyzreader.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
-import timber.log.Timber;
 
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
 
@@ -70,7 +69,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
     void bindTo(Article article) {
 
       String title = article.title();
-      Timber.tag("myxyzreader").d("ARTICLE TITLE FROM BIND: " + title);
       String rawDate = article.published_date();
       String author = article.author();
 

@@ -2,18 +2,34 @@ package com.sedsoftware.xyzreader.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.sedsoftware.xyzreader.R;
 import com.sedsoftware.xyzreader.data.DataManager;
-import com.sedsoftware.xyzreader.data.model.Article;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import javax.inject.Inject;
 import timber.log.Timber;
 
+@SuppressWarnings("ConstantConditions")
 public class ArticleListActivity extends BaseActivity {
 
   @Inject
   DataManager dataManager;
+
+  @BindView(R.id.toolbar)
+  Toolbar toolbar;
+  @BindView(R.id.app_bar)
+  AppBarLayout appbar;
+  @BindView(R.id.recycler_view)
+  RecyclerView recyclerView;
+  @BindView(R.id.swipe_refresh_layout)
+  SwipeRefreshLayout swipeRefreshLayout;
+
+  private ArticlesAdapter adapter;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,27 +37,31 @@ public class ArticleListActivity extends BaseActivity {
 
     getActivityComponent().inject(this);
 
-    Completable sync = dataManager.syncArticles()
-        .doOnError(throwable -> Timber.d("Sync - error!"))
-        .doOnComplete(() -> Timber.d("Sync completed!"))
-        .doOnSubscribe(disposable -> Timber.d("Sync started!"));
+    setContentView(R.layout.activity_article_list);
+    ButterKnife.bind(this);
 
-    Observable<Article> articlesStream = dataManager.getArticlesObservableStream()
-        .doOnSubscribe(disposable -> Timber.d("Articles from db - subscribed."))
-        .doOnComplete(() -> Timber.d("Articles from db - loading completed!"))
-        .doOnError(throwable -> Timber.d("Articles from db - error!"));
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-    Single<Article> articleSingle = dataManager.getArticleSingle(3)
-        .doOnSubscribe(disposable -> Timber.d("Single article from db - subscribed."))
-        .doOnSuccess(article -> Timber.d("Single article - loading completed!"))
-        .doOnError(throwable -> Timber.d("Single article - error: " + throwable.getMessage()));
+    int columnsCount = getResources().getInteger(R.integer.list_column_count);
 
-    sync.subscribe();
+    StaggeredGridLayoutManager sglm =
+        new StaggeredGridLayoutManager(columnsCount, StaggeredGridLayoutManager.VERTICAL);
 
-    articlesStream
-        .subscribe(article -> Timber.d("Articles from db: " + article.title()));
+    adapter = new ArticlesAdapter();
+    adapter.setHasStableIds(true);
 
-    articleSingle
-        .subscribe(article -> Timber.d("Single article: " + article.title()));
+    recyclerView.setLayoutManager(sglm);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setAdapter(adapter);
+
+    if (savedInstanceState == null) {
+      dataManager.syncArticles().subscribe();
+    }
+
+    dataManager.getArticlesObservableStream()
+        .doOnSubscribe(disposable -> adapter.clearList())
+        .doOnNext(article -> Timber.tag("myxyzreader").d("Fetch article from db: " + article.title()))
+        .subscribe(article -> adapter.addArticle(article));
   }
 }

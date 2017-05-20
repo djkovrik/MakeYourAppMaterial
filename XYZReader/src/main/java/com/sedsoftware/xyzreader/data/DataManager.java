@@ -37,7 +37,8 @@ public class DataManager {
   public Observable<Article> getArticlesObservableStream() {
     return databaseHelper
         .getArticlesFromDatabase()
-        .flatMap(Observable::fromIterable);
+        .flatMap(Observable::fromIterable)
+        .distinct();
   }
 
   public Single<Article> getArticleSingle(int id) {
