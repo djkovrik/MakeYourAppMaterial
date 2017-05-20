@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sedsoftware.xyzreader.R;
@@ -16,7 +17,8 @@ import javax.inject.Inject;
 import timber.log.Timber;
 
 @SuppressWarnings("ConstantConditions")
-public class ArticleListActivity extends BaseActivity {
+public class ArticleListActivity extends BaseActivity implements
+    ArticlesAdapter.OnArticleClickListener {
 
   @Inject
   DataManager dataManager;
@@ -51,7 +53,7 @@ public class ArticleListActivity extends BaseActivity {
     StaggeredGridLayoutManager sglm =
         new StaggeredGridLayoutManager(columnsCount, StaggeredGridLayoutManager.VERTICAL);
 
-    adapter = new ArticlesAdapter();
+    adapter = new ArticlesAdapter(this);
     adapter.setHasStableIds(true);
 
     recyclerView.setLayoutManager(sglm);
@@ -66,6 +68,11 @@ public class ArticleListActivity extends BaseActivity {
         .doOnSubscribe(disposable -> adapter.clearList())
         .doOnNext(article -> Timber.d("Fetch article from db: " + article.title()))
         .subscribe(article -> adapter.addArticle(article));
+  }
+
+  @Override
+  public void articleClicked(int id) {
+    Toast.makeText(this, "Article: " + String.valueOf(id), Toast.LENGTH_SHORT).show();
   }
 
   private void handleLoadingIndicator(SwipeRefreshLayout layout) {

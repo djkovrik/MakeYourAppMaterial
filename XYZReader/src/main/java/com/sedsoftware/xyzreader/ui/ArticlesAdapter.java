@@ -16,9 +16,14 @@ import com.sedsoftware.xyzreader.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
+class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
 
   private List<Article> articles = new ArrayList<>();
+  private OnArticleClickListener listener;
+
+  ArticlesAdapter(OnArticleClickListener listener) {
+    this.listener = listener;
+  }
 
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,16 +48,18 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
     return articles.get(position).id();
   }
 
-  public void addArticle(Article article) {
+  void addArticle(Article article) {
     articles.add(article);
     notifyItemInserted(articles.size() - 1);
   }
 
-  public void clearList() {
+  void clearList() {
     articles.clear();
   }
 
-  class ViewHolder extends RecyclerView.ViewHolder {
+  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    private int position;
 
     @BindView(R.id.item_thumbnail)
     ImageView thumbnailView;
@@ -64,9 +71,18 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
     ViewHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
+
+      itemView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+      listener.articleClicked(position);
     }
 
     void bindTo(Article article) {
+
+      this.position = article.id();
 
       String title = article.title();
       String rawDate = article.published_date();
@@ -86,5 +102,9 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
           .diskCacheStrategy(DiskCacheStrategy.ALL)
           .into(thumbnailView);
     }
+  }
+
+  interface OnArticleClickListener {
+    void articleClicked(int id);
   }
 }
