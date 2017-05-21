@@ -1,5 +1,7 @@
 XYZ Reader created as a part of Udacity [Android Developer Nanodegree Program](https://www.udacity.com/course/android-developer-nanodegree-by-google--nd801).
 
+![Screen](https://raw.githubusercontent.com/djkovrik/MakeYourAppMaterial/master/images/poster.jpg)
+
 ## Project Overview
 In this project, you will redesign an app to follow the Material Design guidelines and translate a set of static design mocks to a living and breathing app.
 
@@ -33,14 +35,14 @@ Through this project, you will:
 
 
 ## Rubric
-- [ ] App uses the Design Support library and its provided widget types (FloatingActionButton, AppBarLayout, SnackBar, etc).
+- [x] App uses the Design Support library and its provided widget types (FloatingActionButton, AppBarLayout, SnackBar, etc).
 - [x] App uses CoordinatorLayout for the main Activity.
 - [x] App theme extends from AppCompat.
 - [x] App uses an AppBar and associated Toolbars.
-- [ ] App provides a Floating Action Button for the most common action(s).
-- [ ] App properly specifies elevations for app bars, FABs, and other elements specified in the Material Design specification.
+- [x] App provides a Floating Action Button for the most common action(s).
+- [x] App properly specifies elevations for app bars, FABs, and other elements specified in the Material Design specification.
 - [x] App has a consistent color theme defined in styles.xml. Color theme does not impact usability of the app.
 - [x] App provides sufficient space between text and surrounding elements.
 - [x] App uses images that are high quality, specific, and full bleed.
 - [x] App uses fonts that are either the Android defaults, are complementary, and aren't otherwise distracting.
-- [x] App conforms to common standards found in the [Android Nanodegree General Project Guidelines](http://udacity.github.io/android-nanodegree-guidelines/core.html) .
+- [ ] App conforms to common standards found in the [Android Nanodegree General Project Guidelines](http://udacity.github.io/android-nanodegree-guidelines/core.html) .
