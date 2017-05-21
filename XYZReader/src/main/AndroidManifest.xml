@@ -11,6 +11,7 @@
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:name=".XYZReaderApp"
+    android:supportsRtl="true"
     android:theme="@style/AppTheme.Main">
 
     <activity
@@ -35,6 +36,7 @@
         android:name="android.support.PARENT_ACTIVITY"
         android:value=".ui.ArticleListActivity"/>
     </activity>
+    <activity android:name=".ui.BaseActivity"/>
 
   </application>
 

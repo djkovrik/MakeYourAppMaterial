@@ -2,11 +2,13 @@
 <android.support.design.widget.AppBarLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/app_bar"
   android:layout_width="match_parent"
   android:layout_height="@dimen/appbar_height"
   android:elevation="@dimen/elevation_appbar"
-  android:fitsSystemWindows="true">
+  android:fitsSystemWindows="true"
+  tools:targetApi="lollipop">
 
   <android.support.v7.widget.Toolbar
     android:id="@+id/toolbar"
@@ -26,8 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/logo"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:src="@drawable/logo"/>
     </RelativeLayout>
 
   </android.support.v7.widget.Toolbar>

@@ -13,7 +13,8 @@
     android:layout_height="@dimen/appbar_layout_height"
     android:elevation="@dimen/elevation_appbar"
     android:fitsSystemWindows="true"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    tools:targetApi="lollipop">
 
     <android.support.design.widget.CollapsingToolbarLayout
       android:id="@+id/details_toolbar_collapsing"
@@ -52,7 +53,8 @@
     android:layout_marginTop="@dimen/nested_view_negative_margin"
     android:layout_gravity="center_horizontal"
     android:elevation="@dimen/elevation_card_picked_up"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:targetApi="lollipop">
 
     <android.support.v7.widget.CardView
       android:id="@+id/card_view"
@@ -112,6 +114,7 @@
     android:src="@drawable/ic_share_white_24dp"
     app:layout_anchor="@id/details_app_bar"
     app:layout_anchorGravity="bottom|end"
-    app:pressedTranslationZ="@dimen/elevation_fab_pressed"/>
+    app:pressedTranslationZ="@dimen/elevation_fab_pressed"
+    tools:targetApi="lollipop"/>
 
 </android.support.design.widget.CoordinatorLayout>

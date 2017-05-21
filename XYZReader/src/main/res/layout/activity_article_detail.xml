@@ -13,7 +13,8 @@
     android:layout_height="@dimen/appbar_layout_height"
     android:elevation="@dimen/elevation_appbar"
     android:fitsSystemWindows="true"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    tools:targetApi="lollipop">
 
     <android.support.design.widget.CollapsingToolbarLayout
       android:id="@+id/details_toolbar_collapsing"
@@ -116,6 +117,7 @@
     android:layout_gravity="bottom|end"
     android:elevation="@dimen/elevation_fab_resting"
     android:src="@drawable/ic_share_white_24dp"
-    app:pressedTranslationZ="@dimen/elevation_fab_pressed"/>
+    app:pressedTranslationZ="@dimen/elevation_fab_pressed"
+    tools:targetApi="lollipop"/>
 
 </android.support.design.widget.CoordinatorLayout>

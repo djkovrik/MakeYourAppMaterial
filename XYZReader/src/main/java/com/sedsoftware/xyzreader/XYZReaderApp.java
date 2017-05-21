@@ -10,7 +10,7 @@ import timber.log.Timber;
 
 public class XYZReaderApp extends Application {
 
-  ApplicationComponent applicationComponent;
+  private ApplicationComponent applicationComponent;
 
   @Override
   public void onCreate() {

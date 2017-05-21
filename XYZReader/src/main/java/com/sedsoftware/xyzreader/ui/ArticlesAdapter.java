@@ -19,7 +19,7 @@ import java.util.List;
 class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
 
   private List<Article> articles = new ArrayList<>();
-  private OnArticleClickListener listener;
+  OnArticleClickListener listener;
 
   ArticlesAdapter(OnArticleClickListener listener) {
     this.listener = listener;
