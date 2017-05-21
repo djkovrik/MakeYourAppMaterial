@@ -55,6 +55,7 @@ public class DataManager {
   public Single<Article> getArticleSingle(int id) {
     return databaseHelper
         .getSingleArticleFromDatabase(id)
+        .compose(RxUtils.applySchedulers())
         .firstOrError();
   }
 

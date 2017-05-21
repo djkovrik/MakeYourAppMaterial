@@ -8,7 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sedsoftware.xyzreader.R;
@@ -24,11 +24,14 @@ import timber.log.Timber;
 public class ArticleListActivity extends BaseActivity implements
     OnArticleClickListener, OnRefreshListener {
 
+  private Completable articlesSync;
+  private Disposable articlesSubscribtion;
+
   @Inject
   DataManager dataManager;
 
-  private Completable articlesSync;
-  private Disposable articlesSubscribtion;
+  @BindInt(R.integer.list_column_count)
+  int columnsCount;
 
   @BindView(R.id.toolbar)
   Toolbar toolbar;
@@ -64,8 +67,6 @@ public class ArticleListActivity extends BaseActivity implements
 
     handleLoadingIndicator(swipeRefreshLayout);
 
-    int columnsCount = getResources().getInteger(R.integer.list_column_count);
-
     StaggeredGridLayoutManager sglm =
         new StaggeredGridLayoutManager(columnsCount, StaggeredGridLayoutManager.VERTICAL);
 
@@ -85,8 +86,16 @@ public class ArticleListActivity extends BaseActivity implements
   }
 
   @Override
+  public void onRefresh() {
+    if (articlesSubscribtion != null && !articlesSubscribtion.isDisposed()) {
+      articlesSubscribtion.dispose();
+    }
+    articlesSubscribtion = articlesSync.subscribe();
+  }
+
+  @Override
   public void articleClicked(int id) {
-    Toast.makeText(this, "Article: " + String.valueOf(id), Toast.LENGTH_SHORT).show();
+    startActivity(ArticleDetailActivity.prepareIntent(this, id));
   }
 
   private void handleLoadingIndicator(SwipeRefreshLayout layout) {
@@ -101,16 +110,10 @@ public class ArticleListActivity extends BaseActivity implements
           layout.setRefreshing(false);
           break;
         case RequestState.ERROR:
+          layout.setRefreshing(false);
+          // Show some error message here
           break;
       }
     });
-  }
-
-  @Override
-  public void onRefresh() {
-      if (articlesSubscribtion != null && !articlesSubscribtion.isDisposed()) {
-        articlesSubscribtion.dispose();
-      }
-    articlesSubscribtion = articlesSync.subscribe();
   }
 }

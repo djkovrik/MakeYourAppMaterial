@@ -2,6 +2,7 @@ package com.sedsoftware.xyzreader.injection.components;
 
 import com.sedsoftware.xyzreader.injection.PerActivity;
 import com.sedsoftware.xyzreader.injection.modules.ActivityModule;
+import com.sedsoftware.xyzreader.ui.ArticleDetailActivity;
 import com.sedsoftware.xyzreader.ui.ArticleListActivity;
 import dagger.Component;
 
@@ -10,4 +11,5 @@ import dagger.Component;
 public interface ActivityComponent {
 
   void inject(ArticleListActivity articleListActivity);
+  void inject(ArticleDetailActivity articleListActivity);
 }
