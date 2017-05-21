@@ -107,6 +107,8 @@ public class ArticleDetailActivity extends BaseActivity implements
 
     dataManager
         .getArticleSingle(currentId)
+        .doOnSubscribe(disposable -> supportPostponeEnterTransition())
+        .doFinally(this::supportStartPostponedEnterTransition)
         .subscribe(this::updateActivityLayout);
   }
 

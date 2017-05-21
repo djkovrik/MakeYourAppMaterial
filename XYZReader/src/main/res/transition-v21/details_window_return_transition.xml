@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+  android:duration="250"
+  android:transitionOrdering="together">
+
+  <slide android:slideEdge="top">
+    <targets>
+      <target android:targetId="@id/details_app_bar"/>
+    </targets>
+  </slide>
+
+  <slide android:slideEdge="bottom">
+    <targets>
+      <target android:targetId="@id/card_view"/>
+    </targets>
+  </slide>
+
+  <slide android:slideEdge="right">
+    <targets>
+      <target android:targetId="@id/share_fab"/>
+    </targets>
+  </slide>
+
+</transitionSet>

@@ -1,5 +1,9 @@
 package com.sedsoftware.xyzreader.ui;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -95,7 +99,14 @@ public class ArticleListActivity extends BaseActivity implements
 
   @Override
   public void articleClicked(int id) {
-    startActivity(ArticleDetailActivity.prepareIntent(this, id));
+    Intent intent = ArticleDetailActivity.prepareIntent(this, id);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      startActivity(intent,
+          ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    } else {
+      startActivity(intent);
+    }
   }
 
   private void handleLoadingIndicator(SwipeRefreshLayout layout) {
