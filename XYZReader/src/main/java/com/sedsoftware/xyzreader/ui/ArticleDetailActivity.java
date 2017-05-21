@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.NestedScrollView.OnScrollChangeListener;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -89,6 +90,20 @@ public class ArticleDetailActivity extends BaseActivity implements
             .setType("text/plain")
             .setText(articleBodyView.getText().toString())
             .getIntent(), getString(R.string.action_share))));
+
+    nestedScrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
+      @Override
+      public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
+          int oldScrollY) {
+        boolean scrollingDirection = scrollY > oldScrollY;
+
+        if (scrollingDirection && shareFab.isShown()) {
+          shareFab.hide();
+        } else {
+          shareFab.show();
+        }
+      }
+    });
 
     dataManager
         .getArticleSingle(currentId)
