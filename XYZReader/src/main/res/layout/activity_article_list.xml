@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/material_gray_100"
+  android:orientation="vertical">
+
+  <include layout="@layout/activity_article_list_appbar_include"/>
+
+  <FrameLayout
+    android:layout_width="@dimen/max_layout_width"
     android:layout_height="match_parent"
-    android:background="@color/material_gray_100"
-    android:orientation="vertical">
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <include layout="@layout/activity_article_list_appbar_include"/>
+    <include layout="@layout/activity_article_list_refresh_layout_include"/>
 
-    <FrameLayout
-        android:layout_width="@dimen/max_layout_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <include layout="@layout/activity_article_list_refresh_layout_include"/>
-
-    </FrameLayout>
+  </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

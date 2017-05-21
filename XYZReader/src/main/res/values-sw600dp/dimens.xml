@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Metrics and keylines -->
-    <dimen name="keyline_margin_screen_edge">24dp</dimen>
-    <dimen name="keyline_margin_horizontal">24dp</dimen>
-    <dimen name="keyline_margin_content">80dp</dimen>
+  <!-- Metrics and keylines -->
+  <dimen name="keyline_margin_screen_edge">24dp</dimen>
+  <dimen name="keyline_margin_horizontal">24dp</dimen>
+  <dimen name="keyline_margin_content">80dp</dimen>
 
-    <!-- Collapsed Toolbar metrics -->
-    <dimen name="appbar_layout_height">400dp</dimen>
+  <!-- Collapsed Toolbar metrics -->
+  <dimen name="appbar_layout_height">400dp</dimen>
 
-    <!-- Other -->
-    <dimen name="max_layout_width">400dp</dimen>
-    <dimen name="nested_view_negative_margin">-200dp</dimen>
+  <!-- Other -->
+  <dimen name="max_layout_width">400dp</dimen>
+  <dimen name="nested_view_negative_margin">-200dp</dimen>
 </resources>
