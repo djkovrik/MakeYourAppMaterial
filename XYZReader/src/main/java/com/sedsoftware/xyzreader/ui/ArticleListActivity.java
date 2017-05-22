@@ -29,7 +29,8 @@ public class ArticleListActivity extends BaseActivity implements
     OnArticleClickListener, OnRefreshListener {
 
   private Completable articlesSync;
-  private Disposable articlesSubscribtion;
+  private Disposable syncSubscription;
+  private Disposable streamSubscription;
 
   @Inject
   DataManager dataManager;
@@ -62,8 +63,8 @@ public class ArticleListActivity extends BaseActivity implements
         .doOnSubscribe(disposable -> Timber.d("Sync started..."))
         .doOnComplete(() -> Timber.d("Sync completed"));
 
-    if (savedInstanceState == null && articlesSubscribtion == null) {
-      articlesSubscribtion = articlesSync.subscribe();
+    if (savedInstanceState == null) {
+      syncSubscription = articlesSync.subscribe();
     }
 
     setSupportActionBar(toolbar);
@@ -83,7 +84,7 @@ public class ArticleListActivity extends BaseActivity implements
 
     swipeRefreshLayout.setOnRefreshListener(this);
 
-    dataManager.getArticlesObservableStream()
+    streamSubscription = dataManager.getArticlesObservableStream()
         .doOnSubscribe(disposable -> adapter.clearList())
         .doOnNext(article -> Timber.d("Fetch article from db: " + article.title()))
         .subscribe(article -> adapter.addArticle(article));
@@ -91,10 +92,21 @@ public class ArticleListActivity extends BaseActivity implements
 
   @Override
   public void onRefresh() {
-    if (articlesSubscribtion != null && !articlesSubscribtion.isDisposed()) {
-      articlesSubscribtion.dispose();
+    if (syncSubscription != null && !syncSubscription.isDisposed()) {
+      syncSubscription.dispose();
     }
-    articlesSubscribtion = articlesSync.subscribe();
+    syncSubscription = articlesSync.subscribe();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    if (syncSubscription != null) {
+      syncSubscription.dispose();
+    }
+    if (streamSubscription != null) {
+      streamSubscription.dispose();
+    }
   }
 
   @Override
