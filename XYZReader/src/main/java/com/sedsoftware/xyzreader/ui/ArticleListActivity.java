@@ -12,14 +12,16 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 import butterknife.BindInt;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sedsoftware.xyzreader.R;
 import com.sedsoftware.xyzreader.data.DataManager;
 import com.sedsoftware.xyzreader.data.RequestState;
 import com.sedsoftware.xyzreader.ui.ArticlesAdapter.OnArticleClickListener;
-import io.reactivex.Completable;
+import com.sedsoftware.xyzreader.utils.NetworkUtils;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -28,15 +30,17 @@ import timber.log.Timber;
 public class ArticleListActivity extends BaseActivity implements
     OnArticleClickListener, OnRefreshListener {
 
-  private Completable articlesSync;
-  private Disposable syncSubscription;
-  private Disposable streamSubscription;
+  private Disposable syncDisposable;
+  private Disposable streamDisposable;
 
   @Inject
   DataManager dataManager;
 
   @BindInt(R.integer.list_column_count)
   int columnsCount;
+
+  @BindString(R.string.error_msg)
+  String errorMessage;
 
   @BindView(R.id.toolbar)
   Toolbar toolbar;
@@ -58,19 +62,8 @@ public class ArticleListActivity extends BaseActivity implements
     setContentView(R.layout.activity_article_list);
     ButterKnife.bind(this);
 
-    articlesSync = dataManager
-        .syncArticles()
-        .doOnSubscribe(disposable -> Timber.d("Sync started..."))
-        .doOnComplete(() -> Timber.d("Sync completed"));
-
-    if (savedInstanceState == null) {
-      syncSubscription = articlesSync.subscribe();
-    }
-
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-    handleLoadingIndicator(swipeRefreshLayout);
 
     StaggeredGridLayoutManager sglm =
         new StaggeredGridLayoutManager(columnsCount, StaggeredGridLayoutManager.VERTICAL);
@@ -84,28 +77,27 @@ public class ArticleListActivity extends BaseActivity implements
 
     swipeRefreshLayout.setOnRefreshListener(this);
 
-    streamSubscription = dataManager.getArticlesObservableStream()
-        .doOnSubscribe(disposable -> adapter.clearList())
-        .doOnNext(article -> Timber.d("Fetch article from db: " + article.title()))
-        .subscribe(article -> adapter.addArticle(article));
+    subscribeToDbStream();
+    handleLoadingIndicator();
+
+    if (savedInstanceState == null) {
+      syncData();
+    }
   }
 
   @Override
   public void onRefresh() {
-    if (syncSubscription != null && !syncSubscription.isDisposed()) {
-      syncSubscription.dispose();
-    }
-    syncSubscription = articlesSync.subscribe();
+    syncData();
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    if (syncSubscription != null) {
-      syncSubscription.dispose();
+    if (syncDisposable != null) {
+      syncDisposable.dispose();
     }
-    if (streamSubscription != null) {
-      streamSubscription.dispose();
+    if (streamDisposable != null) {
+      streamDisposable.dispose();
     }
   }
 
@@ -121,22 +113,49 @@ public class ArticleListActivity extends BaseActivity implements
     }
   }
 
-  private void handleLoadingIndicator(SwipeRefreshLayout layout) {
+  private void subscribeToDbStream() {
+    if (streamDisposable == null) {
+      streamDisposable = dataManager.getArticlesObservableStream()
+          .doOnSubscribe(disposable -> adapter.clearList())
+          .doOnNext(article -> Timber.d("Fetch article from db: " + article.title()))
+          .subscribe(article -> adapter.addArticle(article));
+    }
+  }
+
+  private void handleLoadingIndicator() {
     dataManager.getRequestState().subscribe(state -> {
       switch (state) {
         case RequestState.IDLE:
           break;
         case RequestState.LOADING:
-          layout.setRefreshing(true);
+          swipeRefreshLayout.setRefreshing(true);
           break;
         case RequestState.COMPLETED:
-          layout.setRefreshing(false);
+          swipeRefreshLayout.setRefreshing(false);
           break;
         case RequestState.ERROR:
-          layout.setRefreshing(false);
-          // Show some error message here
+          swipeRefreshLayout.setRefreshing(false);
           break;
       }
     });
+  }
+
+  private void syncData() {
+    // Very simple network check, mb not the most elegant solution
+    if (!NetworkUtils.isNetworkConnected(this)) {
+      Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+      swipeRefreshLayout.setRefreshing(false);
+      return;
+    }
+
+    if (syncDisposable != null && !syncDisposable.isDisposed()) {
+      syncDisposable.dispose();
+    }
+
+    syncDisposable = dataManager
+        .syncArticles()
+        .doOnSubscribe(disposable -> Timber.d("Sync started..."))
+        .subscribe(() -> Timber.d("Sync finished..."),
+            t -> Timber.d("Sync failed! Error: " + t.getMessage()));
   }
 }
