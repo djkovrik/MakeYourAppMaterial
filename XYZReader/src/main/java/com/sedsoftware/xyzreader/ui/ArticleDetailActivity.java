@@ -88,11 +88,16 @@ public class ArticleDetailActivity extends BaseActivity implements
       detailsToolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    shareFab.setOnClickListener(v -> startActivity(
+    shareFab.setOnClickListener(v -> {
+      String sharedText = articleBodyView.getText().toString();
+
+      // Share first 100 chars of text
+      // In the real app I would share some text preview + url to a full version
+      startActivity(
         Intent.createChooser(ShareCompat.IntentBuilder.from(ArticleDetailActivity.this)
             .setType("text/plain")
-            .setText(articleBodyView.getText().toString())
-            .getIntent(), getString(R.string.action_share))));
+            .setText(sharedText.substring(0, Math.min(sharedText.length(), 100)))
+            .getIntent(), getString(R.string.action_share)));});
 
     nestedScrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
       @Override
