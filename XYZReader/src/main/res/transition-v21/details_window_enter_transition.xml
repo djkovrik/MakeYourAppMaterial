@@ -3,12 +3,6 @@
   android:duration="250"
   android:transitionOrdering="together">
 
-  <slide android:slideEdge="top">
-    <targets>
-      <target android:targetId="@id/details_app_bar"/>
-    </targets>
-  </slide>
-
   <slide android:slideEdge="bottom">
     <targets>
       <target android:targetId="@id/card_view"/>
@@ -20,5 +14,14 @@
       <target android:targetId="@id/share_fab"/>
     </targets>
   </slide>
+
+  <fade
+    android:duration="250"
+    android:fadingMode="fade_in"
+    android:startDelay="250">
+    <targets>
+      <target android:targetId="@id/meta_bar"/>
+    </targets>
+  </fade>
 
 </transitionSet>

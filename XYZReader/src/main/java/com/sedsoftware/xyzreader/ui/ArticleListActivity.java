@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.BindInt;
 import butterknife.BindString;
@@ -95,12 +96,14 @@ public class ArticleListActivity extends BaseActivity implements
   }
 
   @Override
-  public void articleClicked(int id) {
+  public void articleClicked(int id, ImageView thumbnailView) {
     Intent intent = ArticleDetailActivity.prepareIntent(this, id);
+    String transitionName = getResources().getString(R.string.shared_transition_name);
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      startActivity(intent,
-          ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+      ActivityOptions options = ActivityOptions
+          .makeSceneTransitionAnimation(this, thumbnailView, transitionName);
+      startActivity(intent, options.toBundle());
     } else {
       startActivity(intent);
     }

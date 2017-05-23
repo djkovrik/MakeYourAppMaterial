@@ -20,7 +20,9 @@
       android:adjustViewBounds="true"
       android:background="@color/photo_placeholder"
       android:scaleType="fitCenter"
-      tools:src="@drawable/dummy_thumb"/>
+      android:transitionName="@string/shared_transition_name"
+      tools:src="@drawable/dummy_thumb"
+      tools:targetApi="lollipop"/>
 
     <TextView
       android:id="@+id/item_article_title"

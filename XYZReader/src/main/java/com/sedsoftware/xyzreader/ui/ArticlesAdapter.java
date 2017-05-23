@@ -77,7 +77,7 @@ class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
 
     @Override
     public void onClick(View v) {
-      listener.articleClicked(position);
+      listener.articleClicked(position, thumbnailView);
     }
 
     void bindTo(Article article) {
@@ -105,6 +105,6 @@ class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
   }
 
   interface OnArticleClickListener {
-    void articleClicked(int id);
+    void articleClicked(int id, ImageView thumbnailView);
   }
 }
