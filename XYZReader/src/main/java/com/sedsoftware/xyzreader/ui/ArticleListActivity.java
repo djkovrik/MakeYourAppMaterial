@@ -20,8 +20,12 @@ import butterknife.ButterKnife;
 import com.sedsoftware.xyzreader.R;
 import com.sedsoftware.xyzreader.data.DataManager;
 import com.sedsoftware.xyzreader.data.RequestState;
+import com.sedsoftware.xyzreader.data.model.Article;
 import com.sedsoftware.xyzreader.ui.ArticlesAdapter.OnArticleClickListener;
 import com.sedsoftware.xyzreader.utils.NetworkUtils;
+import io.reactivex.CompletableObserver;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -29,9 +33,6 @@ import timber.log.Timber;
 @SuppressWarnings("ConstantConditions")
 public class ArticleListActivity extends BaseActivity implements
     OnArticleClickListener, OnRefreshListener {
-
-  private Disposable syncDisposable;
-  private Disposable streamDisposable;
 
   @Inject
   DataManager dataManager;
@@ -42,6 +43,9 @@ public class ArticleListActivity extends BaseActivity implements
   @BindString(R.string.error_msg)
   String errorMessage;
 
+  @BindString(R.string.error_msg_unknown)
+  String errorMessageUnknown;
+
   @BindView(R.id.toolbar)
   Toolbar toolbar;
   @BindView(R.id.app_bar)
@@ -51,7 +55,7 @@ public class ArticleListActivity extends BaseActivity implements
   @BindView(R.id.swipe_refresh_layout)
   SwipeRefreshLayout swipeRefreshLayout;
 
-  private ArticlesAdapter adapter;
+  ArticlesAdapter adapter;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class ArticleListActivity extends BaseActivity implements
     swipeRefreshLayout.setOnRefreshListener(this);
 
     subscribeToDbStream();
-    handleLoadingIndicator();
+    handleLoadingStatus();
 
     if (savedInstanceState == null) {
       syncData();
@@ -88,17 +92,6 @@ public class ArticleListActivity extends BaseActivity implements
   @Override
   public void onRefresh() {
     syncData();
-  }
-
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
-    if (syncDisposable != null) {
-      syncDisposable.dispose();
-    }
-    if (streamDisposable != null) {
-      streamDisposable.dispose();
-    }
   }
 
   @Override
@@ -113,16 +106,7 @@ public class ArticleListActivity extends BaseActivity implements
     }
   }
 
-  private void subscribeToDbStream() {
-    if (streamDisposable == null) {
-      streamDisposable = dataManager.getArticlesObservableStream()
-          .doOnSubscribe(disposable -> adapter.clearList())
-          .doOnNext(article -> Timber.d("Fetch article from db: " + article.title()))
-          .subscribe(article -> adapter.addArticle(article));
-    }
-  }
-
-  private void handleLoadingIndicator() {
+  private void handleLoadingStatus() {
     dataManager.getRequestState().subscribe(state -> {
       switch (state) {
         case RequestState.IDLE:
@@ -134,28 +118,74 @@ public class ArticleListActivity extends BaseActivity implements
           swipeRefreshLayout.setRefreshing(false);
           break;
         case RequestState.ERROR:
+          showErrorMessage();
           swipeRefreshLayout.setRefreshing(false);
           break;
       }
     });
   }
 
+  private void showErrorMessage() {
+    String message = NetworkUtils.isNetworkConnected(this) ?
+        errorMessageUnknown :
+        errorMessage;
+
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+
   private void syncData() {
-    // Very simple network check, mb not the most elegant solution
-    if (!NetworkUtils.isNetworkConnected(this)) {
-      Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-      swipeRefreshLayout.setRefreshing(false);
-      return;
-    }
-
-    if (syncDisposable != null && !syncDisposable.isDisposed()) {
-      syncDisposable.dispose();
-    }
-
-    syncDisposable = dataManager
+    dataManager
         .syncArticles()
-        .doOnSubscribe(disposable -> Timber.d("Sync started..."))
-        .subscribe(() -> Timber.d("Sync finished..."),
-            t -> Timber.d("Sync failed! Error: " + t.getMessage()));
+        .subscribe(getSyncObserver());
+  }
+
+  private void subscribeToDbStream() {
+    dataManager
+        .getArticlesObservableStream()
+        .subscribe(getDbStreamObserver());
+  }
+
+  private Observer<Article> getDbStreamObserver() {
+    return new Observer<Article>() {
+      @Override
+      public void onSubscribe(@NonNull Disposable d) {
+        adapter.clearList();
+      }
+
+      @Override
+      public void onNext(@NonNull Article article) {
+        Timber.d("Fetch article from db: " + article.title());
+        adapter.addArticle(article);
+      }
+
+      @Override
+      public void onError(@NonNull Throwable e) {
+        Timber.d("Articles loading - error: " + e.getMessage());
+      }
+
+      @Override
+      public void onComplete() {
+
+      }
+    };
+  }
+
+  private CompletableObserver getSyncObserver() {
+    return new CompletableObserver() {
+      @Override
+      public void onSubscribe(@NonNull Disposable d) {
+        Timber.d("Sync started...");
+      }
+
+      @Override
+      public void onComplete() {
+        Timber.d("Sync finished...");
+      }
+
+      @Override
+      public void onError(@NonNull Throwable e) {
+        Timber.d("Sync failed! Error: " + e.getMessage());
+      }
+    };
   }
 }

@@ -45,4 +45,4 @@ Through this project, you will:
 - [x] App provides sufficient space between text and surrounding elements.
 - [x] App uses images that are high quality, specific, and full bleed.
 - [x] App uses fonts that are either the Android defaults, are complementary, and aren't otherwise distracting.
-- [ ] App conforms to common standards found in the [Android Nanodegree General Project Guidelines](http://udacity.github.io/android-nanodegree-guidelines/core.html) .
+- [x] App conforms to common standards found in the [Android Nanodegree General Project Guidelines](http://udacity.github.io/android-nanodegree-guidelines/core.html) .

@@ -22,6 +22,9 @@ import com.sedsoftware.xyzreader.R;
 import com.sedsoftware.xyzreader.data.DataManager;
 import com.sedsoftware.xyzreader.data.model.Article;
 import com.sedsoftware.xyzreader.utils.StringUtils;
+import io.reactivex.SingleObserver;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -105,11 +108,7 @@ public class ArticleDetailActivity extends BaseActivity implements
       }
     });
 
-    dataManager
-        .getArticleSingle(currentId)
-        .doOnSubscribe(disposable -> supportPostponeEnterTransition())
-        .doFinally(this::supportStartPostponedEnterTransition)
-        .subscribe(this::updateActivityLayout);
+    loadArticle();
   }
 
   @Override
@@ -149,7 +148,7 @@ public class ArticleDetailActivity extends BaseActivity implements
     return intent;
   }
 
-  private void updateActivityLayout(Article article) {
+  void updateActivityLayout(Article article) {
     String title = article.title();
 
     String subtitle = StringUtils.getFormattedDetailsSubtitle(
@@ -182,5 +181,33 @@ public class ArticleDetailActivity extends BaseActivity implements
     Timber.d("Title: " + title);
     Timber.d("Subtitle: " + subtitle);
     Timber.d("URL: " + photoUrl);
+  }
+
+  private void loadArticle() {
+    dataManager
+        .getArticleSingle(currentId)
+        .doOnSubscribe(disposable -> supportPostponeEnterTransition())
+        .doFinally(this::supportStartPostponedEnterTransition)
+        .subscribe(getSingleObserver());
+  }
+
+  private SingleObserver<Article> getSingleObserver() {
+    return new SingleObserver<Article>() {
+      @Override
+      public void onSubscribe(@NonNull Disposable d) {
+        Timber.d("Single article loading started, id: " + currentId);
+      }
+
+      @Override
+      public void onSuccess(@NonNull Article article) {
+        updateActivityLayout(article);
+        Timber.d("Single article loading finished.");
+      }
+
+      @Override
+      public void onError(@NonNull Throwable e) {
+        Timber.d("Single article loading error!");
+      }
+    };
   }
 }
