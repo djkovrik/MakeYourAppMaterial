@@ -2,6 +2,21 @@ XYZ Reader created as a part of Udacity [Android Developer Nanodegree Program](h
 
 ![Screen](https://raw.githubusercontent.com/djkovrik/MakeYourAppMaterial/master/images/poster.jpg)
 
+## Used Libraries
+* [RxJava](https://github.com/ReactiveX/RxJava), [RxAndroid](https://github.com/ReactiveX/RxAndroid), [RxJavaInterop](https://github.com/akarnokd/RxJava2Interop), [RxRelay](https://github.com/JakeWharton/RxRelay)
+* [Dagger 2](https://github.com/google/dagger)
+* [Retrofit 2](https://github.com/square/retrofit) with [RxJava adapter](https://github.com/square/retrofit/tree/master/retrofit-adapters/rxjava2) and [Moshi converter](https://github.com/square/retrofit/tree/master/retrofit-converters/moshi)
+* [OkHttp](https://github.com/square/okhttp)
+* [Retrolambda](https://github.com/evant/gradle-retrolambda)
+* [ButterKnife](https://github.com/JakeWharton/butterknife)
+* [Moshi](https://github.com/square/moshi)
+* [AutoValue](https://github.com/google/auto) with [Moshi extension](https://github.com/rharter/auto-value-moshi)
+* [SqlBrite](https://github.com/square/sqlbrite)
+* [Glide](https://github.com/bumptech/glide)
+* [Stetho](https://github.com/facebook/stetho)
+* [Timber](https://github.com/JakeWharton/timber)
+
+
 ## Project Overview
 In this project, you will redesign an app to follow the Material Design guidelines and translate a set of static design mocks to a living and breathing app.
 
